@@ -782,9 +782,11 @@ void KFDMemoryTest::SearchLargestBuffer(int allocNode, const HsaMemFlags &memFla
  */
 void KFDMemoryTest::LargestSysBufferTest(int gpuNode) {
 
+    /* On separate-node APUs (e.g. gfx1151), Integrated is 0 but hsakmt_is_dgpu()
+     * correctly returns false — both checks are needed for full APU coverage. */
     const HsaNodeProperties *pNodeProps = m_NodeInfo.GetNodeProperties(gpuNode);
-    if (pNodeProps && pNodeProps->Integrated) {
-        LOG() << "Skipping test on APU." << std::endl;
+    if ((pNodeProps && pNodeProps->Integrated) || !hsakmt_is_dgpu()) {
+        LOG() << "Skipping test: Running on APU fails and locks the system." << std::endl;
         return;
     }
 
@@ -824,9 +826,11 @@ TEST_F(KFDMemoryTest, LargestSysBufferTest) {
 
 void KFDMemoryTest::LargestVramBufferTest(int gpuNode) {
 
+    /* On separate-node APUs (e.g. gfx1151), Integrated is 0 but hsakmt_is_dgpu()
+     * correctly returns false — both checks are needed for full APU coverage. */
     const HsaNodeProperties *pNodeProps = m_NodeInfo.GetNodeProperties(gpuNode);
-    if (pNodeProps && pNodeProps->Integrated) {
-        LOG() << "Skipping test on APU." << std::endl;
+    if ((pNodeProps && pNodeProps->Integrated) || !hsakmt_is_dgpu()) {
+        LOG() << "Skipping test: Running on APU fails and locks the system." << std::endl;
         return;
     }
 
@@ -875,9 +879,11 @@ TEST_F(KFDMemoryTest, LargestVramBufferTest) {
  */
 void KFDMemoryTest::BigSysBufferStressTest(int gpuNode) {
 
+    /* On separate-node APUs (e.g. gfx1151), Integrated is 0 but hsakmt_is_dgpu()
+     * correctly returns false — both checks are needed for full APU coverage. */
     const HsaNodeProperties *pNodeProps = m_NodeInfo.GetNodeProperties(gpuNode);
-    if (pNodeProps && pNodeProps->Integrated) {
-        LOG() << "Skipping test on APU." << std::endl;
+    if ((pNodeProps && pNodeProps->Integrated) || !hsakmt_is_dgpu()) {
+        LOG() << "Skipping test: Running on APU fails and locks the system." << std::endl;
         return;
     }
 
